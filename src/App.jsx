@@ -35,10 +35,9 @@ const App = () => {
     //   <Routes>
     //     <Route path="/" element={<DashboardCard />} />
     //     <Route path="/book" element={<CreateBookPage />} />
-    //     <Route path="/article" element={<CreateArticlePage />} />
-
-
-
+    
+    
+    
     //     <Route path="/contact" element={<ContactList />} />
     //     <Route path="/writers" element={<WriterManagement />} />
     //     <Route path="/writers/:id" element={<WriterDetail />} />
@@ -54,20 +53,20 @@ const App = () => {
     //     <Route path="/topic" element={<TopicList />} />
     //     <Route path="/feedback" element={<FeedbackList />} />
     //     <Route path="/event" element={<EventList />} />
-
+    
     //     <Route path="/login" element={<Login />} />
     //     <Route path="/signup" element={<Signup />} />
     //     <Route path="/google-redirect" element={<GoogleRedirectHandler />} />
-
-
-
-
+    
+    
+    
+    
     //     {/* <Route path="/contact_page_list" element={<ContactList />} /> */}
-
+    
     //   </Routes>
     // </Router>
-
-     <Router>
+    
+    <Router>
       <Routes>
         {/* Protected routes */}
         <Route
@@ -86,9 +85,11 @@ const App = () => {
             </PrivateRoute>
           }
         />
-        {/* ...add PrivateRoute similarly to other protected routes */}
+
+        {/* ...add PrivateRoute similarly to other protected routes */}        
 
         {/* Public routes */}
+          <Route path="/article" element={<CreateArticlePage />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/google-redirect" element={<GoogleRedirectHandler />} />
