@@ -26,45 +26,75 @@ import TopicList from './pages/homepage/elements/TopicList';
 import FeedbackList from './pages/homepage/elements/FeedbackList';
 import EventList from './pages/homepage/elements/EventList';
 import GoogleRedirectHandler from "./pages/firebase/GoogleRedirectHandler";
+import PrivateRoute from './component/PrivateRoute';
 
 const App = () => {
   return (
 
-    <Router>
+    // <Router>
+    //   <Routes>
+    //     <Route path="/" element={<DashboardCard />} />
+    //     <Route path="/book" element={<CreateBookPage />} />
+    //     <Route path="/article" element={<CreateArticlePage />} />
+
+
+
+    //     <Route path="/contact" element={<ContactList />} />
+    //     <Route path="/writers" element={<WriterManagement />} />
+    //     <Route path="/writers/:id" element={<WriterDetail />} />
+    //     <Route path="/createwriter" element={<CreateWriterForm />} />
+    //     <Route path="/booklist" element={<BookList />} />
+    //     <Route path="/viewarticle" element={<ViewArticleList />} />
+    //     <Route path="/viewarticle/article/:id" element={<ViewArticleDetail />} />
+    //     <Route path="/questionlist" element={<QuestionList />} />
+    //     <Route path="/createquestion" element={<CreateQuestion />} />
+    //     <Route path="/admin" element={<AdminList />} />
+    //     <Route path="/translator" element={<TranslatorList />} />
+    //     <Route path="/languages" element={<LanguagesGrid />} />
+    //     <Route path="/topic" element={<TopicList />} />
+    //     <Route path="/feedback" element={<FeedbackList />} />
+    //     <Route path="/event" element={<EventList />} />
+
+    //     <Route path="/login" element={<Login />} />
+    //     <Route path="/signup" element={<Signup />} />
+    //     <Route path="/google-redirect" element={<GoogleRedirectHandler />} />
+
+
+
+
+    //     {/* <Route path="/contact_page_list" element={<ContactList />} /> */}
+
+    //   </Routes>
+    // </Router>
+
+     <Router>
       <Routes>
-        <Route path="/" element={<DashboardCard />} />
-        <Route path="/book" element={<CreateBookPage />} />
-        <Route path="/article" element={<CreateArticlePage />} />
+        {/* Protected routes */}
+        <Route
+          path="/"
+          element={
+            <PrivateRoute>
+              <DashboardCard />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/book"
+          element={
+            <PrivateRoute>
+              <CreateBookPage />
+            </PrivateRoute>
+          }
+        />
+        {/* ...add PrivateRoute similarly to other protected routes */}
 
-
-
-        <Route path="/contact" element={<ContactList />} />
-        <Route path="/writers" element={<WriterManagement />} />
-        <Route path="/writers/:id" element={<WriterDetail />} />
-        <Route path="/createwriter" element={<CreateWriterForm />} />
-        <Route path="/booklist" element={<BookList />} />
-        <Route path="/viewarticle" element={<ViewArticleList />} />
-        <Route path="/viewarticle/article/:id" element={<ViewArticleDetail />} />
-        <Route path="/questionlist" element={<QuestionList />} />
-        <Route path="/createquestion" element={<CreateQuestion />} />
-        <Route path="/admin" element={<AdminList />} />
-        <Route path="/translator" element={<TranslatorList />} />
-        <Route path="/languages" element={<LanguagesGrid />} />
-        <Route path="/topic" element={<TopicList />} />
-        <Route path="/feedback" element={<FeedbackList />} />
-        <Route path="/event" element={<EventList />} />
-
+        {/* Public routes */}
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/google-redirect" element={<GoogleRedirectHandler />} />
-
-
-
-
-        {/* <Route path="/contact_page_list" element={<ContactList />} /> */}
-
       </Routes>
     </Router>
+
   )
 }
 

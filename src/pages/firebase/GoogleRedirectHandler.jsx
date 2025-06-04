@@ -1,36 +1,34 @@
-// src/pages/GoogleRedirectHandler.jsx
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import firebase from "firebase/compat/app";
-import "firebase/compat/auth";
+import { auth } from "./firebase";
 
 const GoogleRedirectHandler = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    firebase.auth().getRedirectResult()
+    auth
+      .getRedirectResult()
       .then((result) => {
         if (result.user) {
-          // Save user info to localStorage (or Context/Auth Provider)
-          localStorage.setItem("authUser", JSON.stringify(result.user));
-          navigate("/"); // Redirect to homepage or dashboard
+          // Save user info to localStorage for session persistence
+          localStorage.setItem(
+            "authUser",
+            JSON.stringify({ email: result.user.email })
+          );
+
+          // Redirect to home
+          navigate("/");
         } else {
-          // No user returned — possibly cancelled or first visit
           navigate("/login");
         }
       })
       .catch((error) => {
-        console.error("Google login error:", error);
-        alert("Google login failed!");
+        console.error("Google sign-in error: ", error);
         navigate("/login");
       });
   }, [navigate]);
 
-  return (
-    <div className="flex items-center justify-center h-screen bg-gray-100">
-      <p className="text-lg text-gray-700">Signing in with Google...</p>
-    </div>
-  );
+  return <div>Processing login...</div>;
 };
 
 export default GoogleRedirectHandler;
