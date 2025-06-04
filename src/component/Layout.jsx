@@ -5,6 +5,8 @@ import {
   Calendar, BookOpen, BookMarked, BookCopy, BookUser, HelpCircle,
   Download, Sliders, Info, Tag, MessageCircle
 } from 'lucide-react';
+import { auth } from "../pages/firebase/firebase"; // adjust the path if needed
+
 
 const sidebarLinks = [
   { label: 'Dashboard', icon: LayoutDashboard, path: '/' },
@@ -38,19 +40,25 @@ const Layout = ({ children }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   useEffect(() => {
-    const user = localStorage.getItem("authUser");
-    if (user) {
-      setIsAuthenticated(true);
-    } else {
-      navigate("/login");
-    }
-  }, [navigate]);
+  const user = localStorage.getItem("authUser");
+  if (user) {
+    setIsAuthenticated(true);
+  } else {
+    navigate("/login");
+  }
+}, [navigate]);
+
 
   const handleLogout = () => {
+  auth.signOut().then(() => {
     localStorage.removeItem("authUser");
     setIsAuthenticated(false);
-    navigate("/");
-  };
+    navigate("/login");
+  }).catch((error) => {
+    console.error("Logout error: ", error);
+  });
+};
+
 
   if (!isAuthenticated) return null;
 
