@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import {
   LayoutDashboard, UserCog, PenTool, Languages, BookText, FileText,
   Calendar, BookOpen, BookMarked, BookCopy, BookUser, HelpCircle,
-  Download, Sliders, Info, Tag, MessageCircle
+  Download, Sliders, Info, Tag, MessageCircle, Menu, Bell, ChevronDown
 } from 'lucide-react';
-import { auth } from "../pages/firebase/firebase"; // adjust the path if needed
-
+import "bootstrap-icons/font/bootstrap-icons.css";
+import { auth } from "../pages/firebase/firebase";
 
 const sidebarLinks = [
   { label: 'Dashboard', icon: LayoutDashboard, path: '/' },
@@ -35,82 +35,136 @@ const sidebarLinks = [
 
 const Layout = ({ children }) => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   useEffect(() => {
-  const user = localStorage.getItem("authUser");
-  if (user) {
-    setIsAuthenticated(true);
-  } else {
-    navigate("/login");
-  }
-}, [navigate]);
-
+    const user = localStorage.getItem("authUser");
+    if (user) {
+      setIsAuthenticated(true);
+    } else {
+      navigate("/login");
+    }
+  }, [navigate]);
 
   const handleLogout = () => {
-  auth.signOut().then(() => {
-    localStorage.removeItem("authUser");
-    setIsAuthenticated(false);
-    navigate("/login");
-  }).catch((error) => {
-    console.error("Logout error: ", error);
-  });
-};
-
+    auth.signOut().then(() => {
+      localStorage.removeItem("authUser");
+      setIsAuthenticated(false);
+      navigate("/login");
+    }).catch((error) => {
+      console.error("Logout error: ", error);
+    });
+  };
 
   if (!isAuthenticated) return null;
 
   return (
-    <div className="flex h-screen w-screen bg-gradient-to-tr from-gray-100 to-white text-gray-900">
+    <div className="flex h-screen overflow-hidden bg-gray-100 font-sans">
+      {/* Mobile Sidebar Overlay */}
+      {sidebarOpen && (
+        <div
+          className="fixed inset-0 z-40 bg-black bg-opacity-30 md:hidden"
+          onClick={() => setSidebarOpen(false)}
+        />
+      )}
+
       {/* Sidebar */}
-      <aside className={`w-64 shadow-lg bg-[#1e293b] text-white flex flex-col transition-transform duration-300 ease-in-out ${sidebarOpen ? "translate-x-0" : "-translate-x-full"} md:translate-x-0 fixed md:relative z-20 h-full`}>
-        <div className="p-6 border-b border-gray-700 flex justify-center">
-          <img src="https://minaramasjid.com/assets/image/logo/minara-masjid.png" alt="Admin Panel" className="object-contain w-40 h-12" />
+      <aside className={`fixed z-50 inset-y-0 left-0 w-64 transform bg-white shadow-xl overflow-y-auto transition-transform duration-300 ease-in-out 
+        ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} 
+        md:translate-x-0 md:static md:inset-0`}>
+        <div className="p-6 border-b border-gray-200 flex items-center justify-center">
+          <img src="https://minaramasjid.com/assets/image/logo/minara-masjid.png" alt="Logo" className="object-contain h-12" />
         </div>
-        <nav className="flex flex-col gap-1 mt-4 px-4 overflow-y-auto">
-          {sidebarLinks.map(({ label, icon: Icon, path }, idx) => (
-            <a
-              key={idx}
-              href={path}
-              className="flex items-center gap-3 px-4 py-2 text-sm rounded-md hover:bg-blue-500 hover:text-white transition-all duration-200"
-            >
-              <Icon className="w-5 h-5" />
-              {label}
-            </a>
-          ))}
+
+        <nav className="mt-4 px-2 space-y-1">
+          {sidebarLinks.map(({ label, icon: Icon, path }, idx) => {
+            const isActive = location.pathname === path;
+            return (
+              <a
+                key={idx}
+                href={path}
+                className={`flex items-center py-3 px-6 rounded-lg text-sm font-medium transition-all
+                  ${isActive
+                    ? "bg-[#e8eac430] border-r-4 border-[#4e5909] text-[#4e5909] font-semibold"
+                    : "text-gray-700 hover:bg-gray-50 hover:text-[#3a4207]"}`}
+              >
+                <Icon className="w-5 h-5 mr-3 text-[#4e5909]"  />
+                <span className="text-[15px]">{label}</span>
+              </a>
+            );
+          })}
         </nav>
+
+        <div className="p-6 mt-auto border-t border-gray-200">
+          <button
+            onClick={handleLogout}
+            className="flex w-full items-center justify-center gap-2 py-2 px-4 rounded-lg bg-[#4e5909] hover:bg-[#3b4606] text-white text-sm font-semibold transition"
+          >
+            <i className="bi bi-box-arrow-right"></i>
+            Logout
+          </button>
+        </div>
       </aside>
 
-      {/* Main */}
-      <div className="flex flex-col flex-1 overflow-hidden">
+      {/* Main Content */}
+      <div className="flex-1 flex flex-col overflow-hidden">
         {/* Header */}
-        <header className="flex items-center justify-between bg-white border-b px-6 py-4 shadow-sm">
-          <h3 className="text-xl font-semibold text-gray-700">Admin Panel</h3>
-          <div className="relative">
+        <header className="bg-white shadow-md p-4 flex justify-between items-center flex-shrink-0 z-20">
+          <div className="flex items-center">
             <button
-              className="flex items-center space-x-2 bg-gray-100 hover:bg-gray-200 px-4 py-2 rounded-lg transition-all"
-              onClick={() => setProfileDropdownOpen(!profileDropdownOpen)}
+              className="md:hidden mr-4 text-gray-600 hover:text-[#4e5909]"
+              onClick={() => setSidebarOpen(prev => !prev)}
             >
-              <img src="#" alt="Profile" className="w-8 h-8 rounded-full bg-gray-400" />
-              <span className="text-sm font-medium">Admin</span>
+              <Menu className="w-6 h-6" />
             </button>
-            {profileDropdownOpen && (
-              <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-md shadow-lg z-10">
-                <button
-                  className="block w-full text-left px-4 py-2 hover:bg-gray-100 text-sm text-gray-700"
-                  onClick={handleLogout}
-                >
-                  Logout
-                </button>
-              </div>
-            )}
+            <h1 className="text-xl md:text-2xl font-semibold text-gray-800">Dashboard</h1>
+          </div>
+
+          <div className="flex items-center space-x-4">
+            <button className="relative text-gray-500 hover:text-[#4e5909]">
+              <Bell className="w-5 h-5" />
+              <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full px-1.5 py-0.5">3</span>
+            </button>
+
+            <div className="relative">
+              <button
+                onClick={() => setProfileDropdownOpen(!profileDropdownOpen)}
+                className="flex items-center gap-2 focus:outline-none"
+              >
+                <img
+                  src="https://placehold.co/36x36/E2E8F0/4A5568?text=U"
+                  alt="User Avatar"
+                  className="w-9 h-9 rounded-full border-2 border-gray-200 hover:border-[#4e5909] transition"
+                />
+                <span className="hidden md:inline text-gray-700 font-medium">Umar Mukhtar</span>
+                <ChevronDown className="w-4 h-4 text-gray-500 hidden md:inline" />
+              </button>
+
+              {profileDropdownOpen && (
+                <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-xl z-30 border border-gray-100">
+                  <button className="block w-full text-left px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-100 hover:text-[#4e5909]">
+                    Profile
+                  </button>
+                  <button className="block w-full text-left px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-100 hover:text-[#4e5909]">
+                    Settings
+                  </button>
+                  <button
+                    onClick={handleLogout}
+                    className="block w-full text-left px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-100 hover:text-[#4e5909] border-t border-gray-100"
+                  >
+                    Logout
+                  </button>
+                </div>
+              )}
+            </div>
           </div>
         </header>
 
-        {/* Content */}
-        <main className="flex-1 p-6 overflow-y-auto bg-gray-50 rounded-tl-3xl shadow-inner">
+        {/* Page Content */}
+        <main className="flex-1 overflow-y-auto p-4 md:p-6 bg-gray-50">
           {children}
         </main>
       </div>

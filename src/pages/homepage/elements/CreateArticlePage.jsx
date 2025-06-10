@@ -73,10 +73,12 @@ export default function CreateArticlePage() {
     const fetchData = async () => {
       try {
         const [t, l, tr, w] = await Promise.all([
-          axios.get("http://localhost:5000/topic"),
-          axios.get("http://localhost:5000/language"),
-          axios.get("http://localhost:5000/translators"),
-          axios.get("http://localhost:5000/writers"),
+          axios.get("https://newmmdata-backend.onrender.com/api/topics"),
+          axios.get(
+            "https://newmmdata-backend.onrender.com/api/languages/language"
+          ),
+          axios.get("https://newmmdata-backend.onrender.com/api/translators"),
+          axios.get("https://newmmdata-backend.onrender.com/api/writers"),
         ]);
         setTopics(t.data);
         setLanguage(l.data);
@@ -96,13 +98,15 @@ export default function CreateArticlePage() {
   const handleSubmit = async () => {
     try {
       const articleData = {
-        title,
+        title: title,
         content: articleContent,
-        topic: selectedTopic,
-        writer: selectedWriter,
-        translator: selectedTranslator,
-        language: selectedLanguage,
-        publicationDate,
+        topic_id: selectedTopic,
+        writer_id: selectedWriter,
+        translator_id: selectedTranslator,
+        language_id: selectedLanguage,
+        publication_date: publicationDate,
+        tags: "Technology, Web", // or dynamic value if needed
+        writername: "YourWriterName", // you might want to pull this from writer dropdown
       };
 
       const formData = new FormData();
@@ -114,7 +118,7 @@ export default function CreateArticlePage() {
         formData.append("featuredImage", featuredImage);
       }
 
-      await axios.post("http://localhost:5000/articles", formData, {
+      await axios.post("http://localhost:5000/api/articles", formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
 
@@ -131,9 +135,13 @@ export default function CreateArticlePage() {
         <div className="container mx-auto px-4 py-6">
           {/* Breadcrumb */}
           <div className="flex items-center gap-2 text-sm text-muted-foreground mb-4">
-            <Link to="/dashboard" className="hover:text-foreground">Dashboard</Link>
+            <Link to="/dashboard" className="hover:text-foreground">
+              Dashboard
+            </Link>
             <span>&gt;</span>
-            <Link to="/articles" className="hover:text-foreground">Articles</Link>
+            <Link to="/articles" className="hover:text-foreground">
+              Articles
+            </Link>
             <span>&gt;</span>
             <span className="text-foreground">Create Article</span>
           </div>
@@ -143,11 +151,17 @@ export default function CreateArticlePage() {
           <div className="bg-slate-50 rounded-lg p-8">
             {/* Featured Image Upload */}
             <div className="mb-6">
-              <label className="text-sm font-medium mb-2 block">Featured Image</label>
+              <label className="text-sm font-medium mb-2 block">
+                Featured Image
+              </label>
               <label className="border border-dashed rounded-lg p-12 flex flex-col items-center justify-center text-center cursor-pointer">
                 <ImageIcon className="w-16 h-16 mb-4 text-muted-foreground" />
-                <p className="text-base mb-1">Drop your image here, or click to browse</p>
-                <p className="text-sm text-muted-foreground mb-4">Supported: PNG, JPG, GIF (max 5MB)</p>
+                <p className="text-base mb-1">
+                  Drop your image here, or click to browse
+                </p>
+                <p className="text-sm text-muted-foreground mb-4">
+                  Supported: PNG, JPG, GIF (max 5MB)
+                </p>
                 <input
                   type="file"
                   className="hidden"
@@ -158,7 +172,9 @@ export default function CreateArticlePage() {
                   Browse Files
                 </button>
               </label>
-              {featuredImage && <p className="text-sm mt-2">Selected: {featuredImage.name}</p>}
+              {featuredImage && (
+                <p className="text-sm mt-2">Selected: {featuredImage.name}</p>
+              )}
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -236,10 +252,17 @@ export default function CreateArticlePage() {
                     <Hash className="w-4 h-4" />
                     <label className="text-sm font-medium">Tags</label>
                   </div>
-                  <input type="text" placeholder="Add tags..." className="border rounded-lg p-2 w-full mb-3" />
+                  <input
+                    type="text"
+                    placeholder="Add tags..."
+                    className="border rounded-lg p-2 w-full mb-3"
+                  />
                   <div className="flex flex-wrap gap-2">
                     {["Technology", "Web"].map((tag) => (
-                      <span key={tag} className="flex items-center gap-1 py-1 px-2 bg-gray-100 rounded">
+                      <span
+                        key={tag}
+                        className="flex items-center gap-1 py-1 px-2 bg-gray-100 rounded"
+                      >
                         {tag}
                         <button className="text-gray-600">
                           <X className="w-3 h-3" />
@@ -253,10 +276,19 @@ export default function CreateArticlePage() {
 
             {/* Action Buttons */}
             <div className="flex justify-end items-center gap-4 mt-10">
-              <button className="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700">Delete</button>
-              <button className="border border-gray-400 text-gray-600 px-4 py-2 rounded-md hover:bg-gray-100">Cancel</button>
-              <button className="border border-blue-500 text-blue-500 hover:bg-blue-50 px-4 py-2 rounded-md">Save as Draft</button>
-              <button onClick={handleSubmit} className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">
+              <button className="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700">
+                Delete
+              </button>
+              <button className="border border-gray-400 text-gray-600 px-4 py-2 rounded-md hover:bg-gray-100">
+                Cancel
+              </button>
+              <button className="border border-blue-500 text-blue-500 hover:bg-blue-50 px-4 py-2 rounded-md">
+                Save as Draft
+              </button>
+              <button
+                onClick={handleSubmit}
+                className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700"
+              >
                 Publish
               </button>
             </div>

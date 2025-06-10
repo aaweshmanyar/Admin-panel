@@ -18,7 +18,8 @@ const Login = () => {
   const navigate = useNavigate();
 
   const handleGoogleLogin = () => {
-    auth.signInWithRedirect(provider);
+    // auth.signInWithRedirect(provider);
+    alert("Currently we are working on it , we don't have any admin and superadmin data that's why we did not enable it but you can login userself by clicking on below signup button")
   };
 
   const handleAuth = async (e) => {

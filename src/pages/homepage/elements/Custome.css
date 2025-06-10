@@ -1,0 +1,153 @@
+.accent-color { color: #4e5909; }
+        .bg-accent-color { background-color: #4e5909; }
+        .border-accent-color { border-color: #4e5909; }
+
+        .sidebar {
+            transition: transform 0.3s ease-in-out;
+        }
+        .sidebar-icon {
+            font-size: 1.25rem; /* Consistent icon size */
+            color: #4e5909; 
+            transition: color 0.2s ease;
+            width: 1.5rem; /* Ensure layout consistency */
+            text-align: center;
+        }
+        .sidebar-link span {
+            transition: color 0.2s ease, font-weight 0.2s ease;
+        }
+        .sidebar-link:hover .sidebar-icon,
+        .sidebar-link:hover span {
+            color: #3a4207; /* Darker accent for hover */
+        }
+        .sidebar-link.active {
+            background-color: #e8eac430; /* Lighter, more subtle active bg */
+            border-right: 3px solid #4e5909;
+            border-top-left-radius: 0.5rem; /* Slight curve for active link */
+            border-bottom-left-radius: 0.5rem;
+        }
+        .sidebar-link.active .sidebar-icon,
+        .sidebar-link.active span {
+            color: #4e5909; 
+            font-weight: 600;
+        }
+        .sidebar-link {
+            padding-left: 1.5rem; /* Original px-6 */
+            padding-right: 1rem; /* Adjust for border */
+        }
+
+
+        .stat-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border-radius: 0.75rem; /* xl */
+        }
+        .stat-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 12px 20px -3px rgba(78, 89, 9, 0.15), 0 4px 8px -2px rgba(0, 0, 0, 0.06);
+        }
+        .btn { /* Base button style */
+            padding: 0.625rem 1.25rem; /* py-2.5 px-5 */
+            border-radius: 0.5rem; /* lg */
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem; /* space-x-2 */
+        }
+        .btn-primary {
+            background-color: #4e5909;
+            color: white;
+        }
+        .btn-primary:hover {
+            background-color: #3a4207;
+            box-shadow: 0 4px 12px rgba(78, 89, 9, 0.2);
+        }
+        .btn-secondary {
+            background-color: #f0f2e0; /* Lighter accent shade */
+            color: #4e5909;
+            border: 1px solid #d1d8a8; /* Softer border */
+        }
+        .btn-secondary:hover {
+            background-color: #e8eac4;
+            border-color: #4e5909;
+            color: #3a4207;
+        }
+        .table-action-icon {
+            color: #6b7280; /* gray-500 */
+            transition: color 0.2s ease, transform 0.2s ease;
+            font-size: 1.1rem;
+        }
+        .table-action-icon:hover {
+            color: #4e5909;
+            transform: scale(1.1);
+        }
+        .table-action-delete:hover {
+            color: #ef4444; /* red-500 */
+        }
+
+        /* Input field styling */
+        .form-input, .form-select {
+            border-color: #d1d5db; /* gray-300 */
+            border-radius: 0.5rem; /* rounded-lg */
+            padding: 0.625rem 0.75rem; /* py-2.5 px-3 */
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+        .form-input:focus, .form-select:focus {
+            border-color: #4e5909;
+            box-shadow: 0 0 0 2px rgba(78, 89, 9, 0.2);
+            outline: none;
+        }
+
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .animate-fadeIn { animation: fadeIn 0.5s ease-out forwards; }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(15px); } /* Slightly less Y translation */
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fadeInUp { animation: fadeInUp 0.4s ease-out forwards; opacity: 0; }
+
+        .stagger-delay-1 { animation-delay: 0.05s; }
+        .stagger-delay-2 { animation-delay: 0.1s; }
+        .stagger-delay-3 { animation-delay: 0.15s; }
+        .stagger-delay-4 { animation-delay: 0.2s; }
+        .stagger-delay-5 { animation-delay: 0.25s; }
+        .stagger-delay-6 { animation-delay: 0.3s; }
+
+        ::-webkit-scrollbar { width: 7px; height: 7px; }
+        ::-webkit-scrollbar-track { background: #e9ecef; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb { background: #adb5bd; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #868e96; }
+
+        .content-section { display: none; }
+        .content-section.active { display: block; animation: fadeIn 0.4s ease-out; }
+
+        .main-content-area {
+            padding: 1.5rem; /* p-6 */
+        }
+        @media (min-width: 768px) { /* md */
+            .main-content-area {
+                padding: 2rem; /* p-8 */
+            }
+        }
+        .card {
+            background-color: white;
+            border-radius: 0.75rem; /* rounded-xl */
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.07), 0 2px 4px -1px rgba(0,0,0,0.04); /* Softer shadow */
+            padding: 1.5rem; /* p-6 */
+        }
+        .table-header-cell {
+             padding: 0.75rem 1.5rem; /* px-6 py-3 */
+             text-align: left;
+             font-size: 0.75rem; /* text-xs */
+             font-weight: 600; /* font-medium */
+             color: #4b5563; /* text-gray-600 */
+             text-transform: uppercase;
+             letter-spacing: 0.05em; /* tracking-wider */
+        }
+        .table-body-cell {
+            padding: 1rem 1.5rem; /* px-6 py-4 */
+            white-space: nowrap;
+            font-size: 0.875rem; /* text-sm */
+        }
